@@ -1,89 +1,82 @@
 // declare consts for mainscreens
 let screen1 = document.getElementById("mainscreen");
-let screen2 = document.getElementById("mainscreen2");
-let screen3 = document.getElementById("mainscreen3");
-let screen4 = document.getElementById("mainscreen4");
-let screen5 = document.getElementById("mainscreen5");
+let result_screen = document.getElementById("resultscreen");
 
 // to clear the mainscreen 
 function clearAll() {
-    screen1.innerHTML = ' ';
-    screen2.innerHTML = ' ';
-    screen3.innerHTML = ' ';
-    screen4.innerHTML = ' ';
-    screen5.innerHTML = ' ';
+    screen1.innerHTML = '';
+    result_screen.innerHTML = '';
 }
 
 // to backspace single key 
 function backspace() {
-    
-    if(screen5.innerHTML !== ' '){
-            screen5.innerHTML = screen5.innerHTML.substring(0, screen5.innerHTML.length-1);
-    }else        
-        if (screen3.innerHTML !== ' ') {
-            screen3.innerHTML = screen3.innerHTML.substring(0, screen3.innerHTML.length-1);      
-    }else
-        if(screen1.innerHTML !== ' '){
-            screen1.innerHTML = screen1.innerHTML.substring(0, screen1.innerHTML.length-1);
-    }      
+    if (screen1.innerHTML !== '') {
+        screen1.innerHTML = screen1.innerHTML.substring(0, screen1.innerHTML.length - 1);
+    }
 }
-
 
 // on clicking the number button 
 function click_event(digit) {
-
-    if(screen5.innerHTML !== ' '){
-        screen5.innerHTML = screen5.innerHTML + digit;
-    }else
-    if(screen2.innerHTML !== ' '){
-        screen3.innerHTML = screen3.innerHTML + digit;         
-    }else{
-        screen1.innerHTML = screen1.innerHTML + digit; 
+    if (screen1.innerHTML[screen1.innerHTML.length - 1] !== '√'){
+        screen1.innerHTML = screen1.innerHTML + digit;
     }
+    compute();
 }
 
 // on clicking the operand button
-function click_operand(opt){
-    if(screen5.innerHTML !== ' '){
-        screen1.innerHTML = screen5.innerHTML;
-        screen4.innerHTML = ' ' ;
-        screen5.innerHTML = ' ' ;
+function click_operand(opt) {
+    if (result_screen.innerHTML !== '') {
+        screen1.innerHTML = result_screen.innerHTML;
+        result_screen.innerHTML = '';
     }
-    if(screen1.innerHTML !== ' ') {
-        screen2.innerHTML = opt;
+    if (screen1.innerHTML !== '') {
+        if (screen1.innerHTML[screen1.innerHTML.length - 1] === '+' || screen1.innerHTML[screen1.innerHTML.length - 1] === '-' || screen1.innerHTML[screen1.innerHTML.length - 1] === '*' || screen1.innerHTML[screen1.innerHTML.length - 1] === '/' || screen1.innerHTML[screen1.innerHTML.length - 1] === '%') {
+            screen1.innerHTML = screen1.innerHTML.substring(0, screen1.innerHTML.length - 1);
+        }
+        screen1.innerHTML += opt;
+    }
+    if(opt === '√'){
+        compute();
     }
 }
 
 // to compute the value 
-function compute(){
-    let ans = ' ';
+function compute() {
+    let ans = '';
     //to add the two numbers
-    if(screen2.innerHTML === '+'){
-        ans = parseInt(screen1.innerHTML) + parseInt(screen3.innerHTML);
-    }else
-    //to subtract the two numbers
-    if(screen2.innerHTML === '-'){
-        ans = screen1.innerHTML - screen3.innerHTML;
-    }else
-    //to multiply the two numbers 
-    if(screen2.innerHTML === '*'){
-         ans = screen1.innerHTML * screen3.innerHTML;
-    }else
-    //to divide the two numbers 
-    if(screen2.innerHTML === '/'){
-        ans = screen1.innerHTML / screen3.innerHTML;
-    }else
-    //to find the mode of two numbers 
-    if(screen2.innerHTML === '%'){
-        ans = screen1.innerHTML % screen3.innerHTML;
-    }else
-    // to find the square-root of a number 
-    if(screen2.innerHTML === '√'){
-        ans = Math.sqrt(screen1.innerHTML);
+    if (screen1.innerHTML.includes('+') === true) {
+        let num1 = parseFloat(screen1.innerHTML.slice(0, screen1.innerHTML.indexOf('+')));
+        let num2 = parseFloat(screen1.innerHTML.slice(screen1.innerHTML.indexOf('+') + 1, screen1.innerHTML.length));
+        ans = num1 + num2;
+
+    } else //to subtract the two numbers 
+    if (screen1.innerHTML.includes('-') === true) {
+        let num1 = parseFloat(screen1.innerHTML.slice(0, screen1.innerHTML.indexOf('-')));
+        let num2 = parseFloat(screen1.innerHTML.slice(screen1.innerHTML.indexOf('-') + 1, screen1.innerHTML.length));
+        ans = num1 - num2;
+
+    } else //to multiply the two numbers 
+    if (screen1.innerHTML.includes('*') === true) {
+        let num1 = parseFloat(screen1.innerHTML.slice(0, screen1.innerHTML.indexOf('*')));
+        let num2 = parseFloat(screen1.innerHTML.slice(screen1.innerHTML.indexOf('*') + 1, screen1.innerHTML.length));
+        ans = num1 * num2;
+
+    } else //to divide the two numbers  
+    if (screen1.innerHTML.includes('/') === true) {
+        let num1 = parseFloat(screen1.innerHTML.slice(0, screen1.innerHTML.indexOf('/')));
+        let num2 = parseFloat(screen1.innerHTML.slice(screen1.innerHTML.indexOf('/') + 1, screen1.innerHTML.length));
+        ans = num1 / num2;
+
+    } else //to find the mode of two numbers  
+    if (screen1.innerHTML.includes('%') === true) {
+        let num1 = parseFloat(screen1.innerHTML.slice(0, screen1.innerHTML.indexOf('%')));
+        let num2 = parseFloat(screen1.innerHTML.slice(screen1.innerHTML.indexOf('%') + 1, screen1.innerHTML.length));
+        ans = num1 % num2;
+
+    }else // to find the square-root of a number 
+    if(screen1.innerHTML.includes('√') === true){
+        let num1 = parseFloat(screen1.innerHTML.slice(0, screen1.innerHTML.indexOf('√')));
+        ans = Math.sqrt(num1);
     }
-    screen1.innerHTML = ' ';
-    screen2.innerHTML = ' ';
-    screen3.innerHTML = ' '; 
-    screen4.innerHTML = '=';
-    screen5.innerHTML = ans;
+    result_screen.innerHTML = ans;
 }
